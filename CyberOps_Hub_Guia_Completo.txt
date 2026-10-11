@@ -1,0 +1,930 @@
+CYBEROPS HUB — GUIA COMPLETO DO PROJETO
+Projeto de portfólio alinhado ao AIR Fellowship — AI-Driven Fullstack Development
+
+============================================================
+1. VISÃO GERAL
+============================================================
+
+Nome: CyberOps Hub
+
+Objetivo:
+Criar uma plataforma web de gerenciamento de incidentes de segurança
+para uma empresa, permitindo registrar, investigar, acompanhar e encerrar
+incidentes, administrar ativos, evidências, usuários e auditoria.
+
+O projeto também servirá como laboratório prático para aplicar, ao longo
+da evolução, os conceitos previstos no AIR Fellowship:
+- Git, branches e Pull Requests
+- HTML/CSS/JavaScript e TypeScript
+- Testes unitários, integração e E2E
+- Regex para validação
+- Node.js e NestJS
+- React.js
+- MongoDB
+- Docker
+- Postman
+- Prompt Engineering e Context Engineering
+- Skills, Agents e MCP
+- AGENTS.md e governança de agentes
+- Spec-Driven Development
+- Spec Kit e EARS
+- CI/CD e Quality Gates
+- OWASP, secrets e dependências
+- Deploy em containers
+- AWS e arquitetura escalável
+
+IMPORTANTE:
+O objetivo não é implementar tudo de uma vez. O projeto deve evoluir
+gradualmente conforme os conhecimentos forem aprendidos.
+
+============================================================
+2. PROBLEMA QUE O SISTEMA RESOLVE
+============================================================
+
+Uma empresa precisa centralizar seus incidentes de segurança.
+
+Exemplo:
+Um servidor começa a apresentar centenas de tentativas de login
+malsucedidas. O analista registra o incidente, classifica sua severidade,
+associa o ativo afetado, adiciona evidências, registra ações realizadas
+e acompanha o incidente até o encerramento.
+
+O CyberOps Hub centraliza esse processo.
+
+============================================================
+3. STACK PRINCIPAL
+============================================================
+
+Frontend:
+- React
+- TypeScript
+
+Backend:
+- Node.js
+- NestJS
+- TypeScript
+
+Banco:
+- MongoDB
+
+Ferramentas:
+- Docker
+- Docker Compose
+- Postman
+- Git
+- GitHub
+- GitHub Actions
+
+Futuras integrações:
+- IA
+- Agents
+- MCP
+- AWS
+
+============================================================
+4. ARQUITETURA INICIAL
+============================================================
+
+                  +----------------------+
+                  |       React          |
+                  |     TypeScript       |
+                  +----------+-----------+
+                             |
+                            HTTP
+                             |
+                  +----------v-----------+
+                  |       NestJS         |
+                  |     TypeScript       |
+                  |       REST API       |
+                  +----------+-----------+
+                             |
+                  +----------v-----------+
+                  |       MongoDB        |
+                  +----------------------+
+
+Inicialmente, tudo pode rodar com Docker Compose:
+
+- frontend
+- backend
+- mongodb
+
+============================================================
+5. FUNCIONALIDADES DO MVP
+============================================================
+
+O MVP deve ser pequeno e funcional.
+
+5.1 AUTENTICAÇÃO
+----------------
+
+- Login
+- JWT
+- Senhas armazenadas com hash seguro
+- Proteção de rotas
+- Validação de entrada
+
+Perfis:
+
+ANALISTA
+- visualizar incidentes
+- criar incidentes
+- atualizar incidentes
+- adicionar evidências
+- adicionar comentários
+
+SUPERVISOR
+- tudo do analista
+- atribuir incidentes
+- alterar severidade
+- encerrar incidentes
+- visualizar métricas
+
+ADMINISTRADOR
+- tudo acima
+- gerenciar usuários
+- gerenciar permissões
+- gerenciar ativos
+- configurações
+
+5.2 INCIDENTES
+--------------
+
+Criar incidente com:
+
+- título
+- descrição
+- tipo
+- severidade
+- ativo afetado
+- origem
+- responsável
+- status
+
+Tipos possíveis:
+- Malware
+- Phishing
+- Brute Force
+- Ransomware
+- Vazamento de dados
+- DDoS
+- Acesso não autorizado
+- Vulnerabilidade
+- Outro
+
+Severidade:
+- Baixa
+- Média
+- Alta
+- Crítica
+
+Fluxo sugerido:
+
+Aberto
+  -> Triagem
+  -> Investigação
+  -> Contenção
+  -> Erradicação
+  -> Recuperação
+  -> Encerrado
+
+5.3 DASHBOARD
+-------------
+
+Exibir:
+- total de incidentes
+- incidentes em análise
+- incidentes críticos
+- incidentes por severidade
+- incidentes recentes
+- gráficos e métricas
+
+5.4 ATIVOS
+----------
+
+Cadastrar:
+- notebooks
+- desktops
+- servidores
+- firewalls
+- roteadores
+- aplicações
+- bancos de dados
+- serviços cloud
+
+Exemplo:
+
+SRV-001
+Servidor Web
+Linux
+10.0.1.20
+Produção
+Crítico
+
+Incidentes podem ser associados aos ativos.
+
+5.5 EVIDÊNCIAS
+--------------
+
+Um incidente pode conter:
+- arquivos
+- screenshots
+- logs
+- PCAPs
+- links
+- metadados
+
+No MVP, começar armazenando os metadados.
+Futuramente, usar AWS S3 para armazenamento.
+
+5.6 TIMELINE
+------------
+
+Registrar eventos:
+
+09:14 — Incidente criado
+09:18 — Classificado como Alta
+09:23 — Analista atribuído
+09:41 — IP bloqueado
+10:05 — Evidência adicionada
+10:37 — Investigação concluída
+11:02 — Incidente encerrado
+
+5.7 AUDITORIA
+-------------
+
+Registrar ações importantes:
+
+USER: caua
+ACTION: UPDATE_INCIDENT
+INCIDENT: INC-0042
+TIMESTAMP: 2026-10-10 14:32
+
+Objetivos:
+- rastreabilidade
+- accountability
+- investigação
+- segurança
+- auditoria
+
+============================================================
+6. API INICIAL
+============================================================
+
+Exemplos:
+
+POST   /auth/login
+
+POST   /incidents
+GET    /incidents
+GET    /incidents/:id
+PATCH  /incidents/:id
+DELETE /incidents/:id
+
+POST   /assets
+GET    /assets
+
+GET    /dashboard
+
+Futuras APIs:
+
+GET    /audit-logs
+GET    /incidents/:id/timeline
+POST   /incidents/:id/evidence
+POST   /ai/analyze-incident
+
+============================================================
+7. CYBEROPS AI
+============================================================
+
+A IA não deve ser implementada antes do MVP funcionar.
+
+Objetivo:
+Auxiliar o analista na análise de incidentes.
+
+Exemplo de entrada:
+
+"Foram detectadas 350 tentativas de login falhas contra o servidor
+SSH em aproximadamente 5 minutos, provenientes do mesmo endereço IP."
+
+A IA pode sugerir:
+
+Classificação:
+Brute Force
+
+Severidade:
+Alta
+
+Resumo:
+"Atividade compatível com tentativa automatizada de força bruta
+contra serviço SSH."
+
+Ações sugeridas:
+1. Verificar logs de autenticação.
+2. Validar possível comprometimento de credenciais.
+3. Bloquear ou limitar o endereço de origem.
+4. Verificar outros ativos.
+5. Avaliar rotação de credenciais.
+
+IMPORTANTE:
+A IA deve sugerir, não tomar decisões críticas automaticamente.
+O analista aceita ou rejeita a sugestão.
+
+============================================================
+8. CYBEROPS AGENT
+============================================================
+
+O CyberOps Agent será a evolução do módulo de IA.
+
+Objetivo:
+Permitir que um agente autorizado consulte informações do sistema e
+auxilie na investigação de incidentes.
+
+Exemplo:
+
+Usuário:
+"Analise o incidente INC-0042."
+
+O agente pode:
+1. Buscar o incidente.
+2. Buscar evidências permitidas.
+3. Consultar o ativo afetado.
+4. Consultar a timeline.
+5. Analisar as informações.
+6. Produzir uma avaliação.
+7. Sugerir classificação.
+8. Gerar recomendações.
+
+O agente NÃO deve possuir acesso irrestrito.
+
+============================================================
+9. PERMISSÕES DO CYBEROPS AGENT
+============================================================
+
+Exemplo:
+
+READ:
+- incidents
+- assets
+- evidence metadata
+- incident timeline
+- audit logs
+
+WRITE:
+- incident notes
+
+DELETE:
+- proibido
+
+Alterações críticas devem exigir ação humana.
+
+Princípio:
+Least Privilege.
+
+O agente deve possuir somente as ferramentas necessárias para a tarefa.
+
+============================================================
+10. SKILLS
+============================================================
+
+Possíveis Skills:
+
+Skill: AnalyzeIncident
+- recebe ID do incidente
+- busca dados permitidos
+- analisa
+- produz avaliação
+
+Skill: IncidentSummary
+- resume um incidente
+
+Skill: RiskAssessment
+- sugere severidade e riscos
+
+Skill: GenerateResponsePlan
+- sugere plano de resposta
+
+Cada Skill deve ter:
+- objetivo
+- entrada
+- saída
+- permissões
+- ferramentas permitidas
+- limitações
+
+============================================================
+11. MCP
+============================================================
+
+Criar ferramentas controladas para o agente:
+
+get_incident()
+get_asset()
+get_incident_timeline()
+get_audit_logs()
+search_incidents()
+
+O agente acessa essas ferramentas conforme suas permissões.
+
+Exemplo:
+
+CyberOps Agent
+
+READ:
+[OK] incidents
+[OK] assets
+[OK] evidence metadata
+
+WRITE:
+[OK] incident notes
+
+DELETE:
+[BLOCKED]
+
+A ideia é demonstrar governança e controle de ferramentas.
+
+============================================================
+12. AGENTS.md
+============================================================
+
+O repositório deve possuir AGENTS.md.
+
+Exemplo de regras:
+
+# CyberOps Hub Agent Guidelines
+
+## Architecture
+- Frontend usa React + TypeScript.
+- Backend usa NestJS.
+- Persistência usa MongoDB.
+
+## Security
+- Nunca expor secrets.
+- Nunca desativar autenticação.
+- Nunca commitar credenciais.
+- Validar entradas externas.
+- Respeitar princípio do menor privilégio.
+
+## Testing
+- Novas features exigem testes.
+- Não modificar testes apenas para fazê-los passar.
+- Executar testes antes do PR.
+
+## Pull Requests
+- Explicar alterações arquiteturais.
+- Incluir evidências de testes.
+- Registrar considerações de segurança.
+
+============================================================
+13. SPEC-DRIVEN DEVELOPMENT
+============================================================
+
+Antes de implementar uma feature:
+
+Requirement
+    |
+    v
+Specification
+    |
+    v
+Tasks
+    |
+    v
+Implementation
+    |
+    v
+Tests
+    |
+    v
+Pull Request
+    |
+    v
+Review
+
+Exemplo:
+
+Arquivo:
+specs/incidents/create-incident.md
+
+Requisito:
+"O sistema deve permitir que usuários autorizados criem incidentes."
+
+Exemplo de requisito EARS:
+
+WHEN um usuário autenticado enviar dados válidos de incidente,
+THE SYSTEM SHALL criar o incidente e retornar seu identificador.
+
+Cada feature importante deve possuir:
+- requisito
+- critérios verificáveis
+- tarefas
+- implementação
+- testes
+- evidências no PR
+
+============================================================
+14. TESTES
+============================================================
+
+Testes unitários:
+- IncidentService
+- AuthService
+- RiskService
+- funções de validação
+
+Testes de integração:
+- POST /incidents
+- GET /incidents
+- PATCH /incidents/:id
+
+Teste E2E:
+
+Login
+  ->
+Criar incidente
+  ->
+Visualizar incidente
+  ->
+Alterar status
+  ->
+Encerrar incidente
+
+Os testes devem funcionar como gates de qualidade.
+
+============================================================
+15. CI/CD
+============================================================
+
+Fluxo sugerido:
+
+Pull Request
+    |
+    v
+Lint
+    |
+    v
+TypeScript
+    |
+    v
+Unit Tests
+    |
+    v
+Integration Tests
+    |
+    v
+E2E
+    |
+    v
+Security Scan
+    |
+    v
+Docker Build
+    |
+    v
+Deploy
+
+Se os quality gates falharem:
+- impedir merge/deploy
+- informar o erro
+
+============================================================
+16. SEGURANÇA
+============================================================
+
+Aplicar conceitos de OWASP.
+
+Backend:
+- JWT
+- RBAC
+- validação de entrada
+- sanitização
+- rate limiting
+- CORS adequado
+- headers de segurança
+- tratamento seguro de erros
+- hash seguro de senhas
+- proteção contra NoSQL Injection
+- controle de acesso
+
+Secrets:
+- nunca colocar credenciais no Git
+- usar variáveis de ambiente
+- futuramente usar AWS Secrets Manager ou Parameter Store
+
+Dependências:
+- verificar vulnerabilidades
+- atualizar dependências
+- executar scans no CI
+
+Docker:
+- evitar imagens desnecessariamente privilegiadas
+- não incluir secrets
+- reduzir superfície de ataque
+
+============================================================
+17. DOCKER
+============================================================
+
+Desenvolvimento local:
+
+docker-compose.yml
+
+Serviços:
+- frontend
+- backend
+- mongodb
+
+Objetivo:
+Qualquer desenvolvedor deve conseguir subir o ambiente com poucos
+comandos e reproduzir o projeto.
+
+============================================================
+18. POSTMAN
+============================================================
+
+Criar uma collection documentando:
+
+Auth
+- login
+
+Incidents
+- create
+- list
+- get by id
+- update
+- delete
+
+Assets
+- create
+- list
+
+Dashboard
+- metrics
+
+Futuro:
+AI
+- analyze incident
+
+A collection deve ser versionada no Git.
+
+============================================================
+19. AWS — EVOLUÇÃO FUTURA
+============================================================
+
+Não começar pela arquitetura AWS completa.
+
+Primeiro:
+React + NestJS + MongoDB + Docker funcionando localmente.
+
+Depois:
+
+                    Internet
+                       |
+                       v
+                     ALB
+                   /                       v       v
+               EC2/API  EC2/API
+                  \       /
+                   \     /
+                    v   v
+                 MongoDB
+
+Possíveis componentes:
+- VPC
+- subnets
+- Security Groups
+- ALB
+- EC2
+- Auto Scaling
+- CloudWatch
+- IAM
+- S3
+- Secrets Manager / Parameter Store
+
+MongoDB Atlas pode ser usado como banco gerenciado para manter a stack
+do edital.
+
+============================================================
+20. ESTRUTURA DO REPOSITÓRIO
+============================================================
+
+cyberops-hub/
+|
++-- apps/
+|   +-- frontend/
+|   +-- backend/
+|
++-- packages/
+|   +-- shared/
+|
++-- docs/
+|   +-- architecture/
+|   +-- security/
+|   +-- decisions/
+|
++-- specs/
+|   +-- authentication/
+|   +-- incidents/
+|   +-- assets/
+|   +-- ai/
+|
++-- tests/
+|
++-- docker/
+|
++-- .github/
+|   +-- workflows/
+|
++-- AGENTS.md
++-- README.md
++-- docker-compose.yml
+
+============================================================
+21. ROADMAP
+============================================================
+
+FASE 1 — MVP
+- Git
+- branches
+- PR
+- React + TypeScript
+- NestJS
+- MongoDB
+- Docker
+- Login
+- Incidentes
+- Dashboard básico
+- Testes iniciais
+- README
+
+FASE 2 — FULL STACK COMPLETO
+- Ativos
+- Evidências
+- Timeline
+- Auditoria
+- RBAC
+- Validações
+- Postman
+- Testes de integração/E2E
+
+FASE 3 — ENGENHARIA
+- arquitetura organizada
+- documentação
+- ADRs/decisões técnicas
+- specs
+- EARS
+- AGENTS.md
+- PRs com evidências
+
+FASE 4 — AGENTES
+- prompt engineering
+- context engineering
+- CyberOps AI
+- CyberOps Agent
+- Skills
+- MCP
+- permissões
+
+FASE 5 — DEVSECOPS
+- GitHub Actions
+- quality gates
+- security scans
+- dependency scanning
+- secrets management
+- OWASP
+- Docker security
+
+FASE 6 — CLOUD
+- AWS
+- containers
+- ALB
+- EC2
+- Auto Scaling
+- CloudWatch
+- IAM
+- S3
+- Secrets Manager / Parameter Store
+
+============================================================
+22. REGRA MAIS IMPORTANTE
+============================================================
+
+NÃO tentar implementar tudo em uma semana.
+
+A primeira versão deve ser pequena e funcionar.
+
+MVP da primeira semana:
+
+FRONTEND
+- React + TypeScript
+- Login
+- Dashboard
+- Lista de incidentes
+- Criar incidente
+- Página do incidente
+
+BACKEND
+- NestJS
+- Auth
+- Incidents
+- MongoDB
+- JWT
+- validação
+
+INFRA
+- Docker Compose
+
+QUALIDADE
+- alguns testes unitários
+- README
+- Git
+- branches
+- Pull Request
+
+Depois, o projeto evolui junto com o aprendizado do AIR Fellowship.
+
+============================================================
+23. COMO APRESENTAR NO CURRÍCULO
+============================================================
+
+CyberOps Hub — Security Incident Management Platform
+React • TypeScript • NestJS • Node.js • MongoDB • Docker • AWS
+
+- Desenvolvi uma plataforma full stack para gerenciamento de incidentes
+  de segurança.
+- Implementei frontend em React/TypeScript e API REST com NestJS.
+- Implementei autenticação, autorização baseada em papéis e validação
+  de entradas.
+- Modelei persistência em MongoDB e ambiente reproduzível com Docker.
+- Desenvolvi testes unitários, integração e E2E.
+- Implementei CI/CD com quality gates e verificações de segurança.
+- Desenvolvi funcionalidades de IA/Agentes com ferramentas e permissões
+  controladas.
+- Estruturei deploy em containers e evolução para arquitetura escalável
+  na AWS.
+
+Não adicionar ao currículo algo que ainda não foi implementado.
+Atualizar os bullets conforme o projeto realmente evoluir.
+
+============================================================
+24. COMO APRESENTAR NO GITHUB
+============================================================
+
+README deve conter:
+
+1. O problema
+2. A solução
+3. Funcionalidades
+4. Stack
+5. Arquitetura
+6. Como executar
+7. Variáveis de ambiente
+8. Testes
+9. Segurança
+10. CI/CD
+11. IA/Agentes
+12. Arquitetura AWS
+13. Screenshots
+14. Decisões técnicas
+15. Roadmap
+
+Adicionar:
+- diagrama de arquitetura
+- screenshots
+- link da aplicação quando estiver online
+- documentação da API
+- evidências de testes
+- status do CI
+
+============================================================
+25. OBJETIVO FINAL
+============================================================
+
+Ao final, o CyberOps Hub deve demonstrar:
+
+FULL STACK
+React + TypeScript + NestJS + MongoDB
+
+SOFTWARE ENGINEERING
+Git + PR + Specs + testes + arquitetura
+
+AI ENGINEERING
+Prompt Engineering + Context Engineering + Agents + Skills + MCP
+
+DEVSECOPS
+OWASP + secrets + dependency scanning + CI/CD + quality gates
+
+CLOUD
+Docker + AWS + escalabilidade + observabilidade
+
+CYBERSECURITY
+Incidentes + ativos + evidências + auditoria + RBAC
+
+A proposta não é apenas "ter um projeto".
+
+É construir uma aplicação que mostre, através de código, documentação,
+testes, PRs e infraestrutura, como você pensa e desenvolve software
+full stack moderno com segurança, IA e cloud.
+
+============================================================
+FIM
+============================================================
