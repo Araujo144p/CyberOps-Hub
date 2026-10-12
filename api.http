@@ -1,0 +1,17 @@
+### Requisição GET
+GET http://localhost:8080/incidents
+
+### Requisição POST
+POST http://localhost:8080/incidents
+Content-Type: application/json
+
+{
+  "title": "Suspicious Phishing Email Detected",
+  "description": "An employee received a suspicious email impersonating the company's IT department. The email contains a link to a fake login page designed to steal corporate credentials. The employee reported the email before clicking the link.",
+  "type": "Phishing",
+  "severity": "Medium",
+  "affectedAsset": "Employee Account - EMP-1042",
+  "source": "User Report",
+  "assignee": "Maria Oliveira",
+  "status": "Open"
+}
