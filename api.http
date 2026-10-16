@@ -15,3 +15,14 @@ Content-Type: application/json
   "assignee": "Maria Oliveira",
   "status": "Open"
 }
+
+
+### Cadastro de usuário
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Analista de Segurança",
+  "email": "analista.teste@example.com",
+  "password": "CyberOpsTeste123!"
+}
