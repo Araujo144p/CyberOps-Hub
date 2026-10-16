@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -6,12 +6,15 @@ import * as bcrypt from 'bcrypt';
 
 import { User, UserDocument } from './schemas/user.schema/user.schema';
 import { RegisterDto } from './dto/register.dto/register-user.dto';
+import { LoginDto } from './dto/login.dto/login.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
+    private readonly jwtService: JwtService,
   ) {}
 
     
@@ -54,5 +57,34 @@ export class AuthService {
       throw error;
     }
     //esse catch e throw identifica e trata especificamente a duplicidade de e-mail, sem esconder outros erros inesperados.
+  }
+
+
+  async login(dto: LoginDto) {
+    const email = dto.email.trim().toLowerCase();
+    const password = dto.password.trim();
+
+    if(Buffer.byteLength(password, 'utf-8') > 72){
+      throw new BadRequestException('Password must be less than or equal to 72 bytes');
+    }
+
+    const user = await this.userModel.findOne({ email}).select('+passwordHash').exec();
+
+    if(!user || !(await bcrypt.compare(password, user.passwordHash))){
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const acessToken = await this.jwtService.signAsync({ sub: user._id.toString(), email: user.email });
+
+    return { 
+      acess_token: acessToken,
+      token_type: 'Bearer',
+      expires_in: 3600,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      }
+    };
   }
 }
