@@ -87,4 +87,19 @@ export class AuthService {
       }
     };
   }
+
+  async getMe (userId: string) {
+    const user = await this.userModel.findById(userId).exec();
+
+    if(!user){
+      throw new UnauthorizedException('User not found or unauthorized');
+    }
+
+    return {
+      id: user._id,
+      name: user.name,
+      email: user.email
+    };
+  }
+
 }

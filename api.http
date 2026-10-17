@@ -1,9 +1,12 @@
+@token = COLE_SEU_TOKEN_AQUI
 ### Requisição GET
 GET http://localhost:8080/incidents
+Authorization: Bearer {{token}}
 
 ### Requisição POST
 POST http://localhost:8080/incidents
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "title": "Suspicious Phishing Email Detected",
@@ -18,7 +21,7 @@ Content-Type: application/json
 
 
 ### Cadastro de usuário
-POST http://localhost:3000/auth/register
+POST http://localhost:8080/auth/register
 Content-Type: application/json
 
 {
@@ -36,3 +39,8 @@ Content-Type: application/json
   "email": "analista.teste@example.com",
   "password": "CyberOpsTeste123!"
 }
+
+
+### Usuário autenticado
+GET http://localhost:8080/auth/me
+Authorization: Bearer {{token}}
