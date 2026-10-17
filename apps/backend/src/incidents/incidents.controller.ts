@@ -1,4 +1,3 @@
-
 import {
   Body,
   Controller,
@@ -8,7 +7,10 @@ import {
 
 import { CreateIncidentDto } from './dto/create-incident.dto/create-incident.dto';
 import { IncidentsService } from './incidents.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
+@UseGuards(JwtAuthGuard)
 @Controller('incidents')
 export class IncidentsController {
   constructor(
